@@ -41,14 +41,28 @@ class _WaitingPageState extends State<WaitingPage> {
         const SizedBox(
           height: 40,
         ),
-        SizedBox(height: 100, child: SelfieDisplayGen()),
+        Container(height: 100, child: SelfieDisplayGen()),
         const SizedBox(
           height: 40,
         ),
-        const FloatingActionButton.extended(
-            onPressed: null,
-            label: Text("Begin choosing"),
-            icon: Icon(Icons.arrow_forward)),
+        if (user.isHost)
+          Container(
+            width: 250,
+            height: 120,
+            margin: const EdgeInsets.all(10),
+            child: Expanded(
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/order');
+                },
+                label: const Text(
+                  "Order",
+                  style: TextStyle(fontSize: 20),
+                ),
+                icon: SvgPicture.asset("images/orderIn.svg", width: 120),
+              ),
+            ),
+          ),
         const SizedBox(
           height: 80,
         )

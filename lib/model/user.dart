@@ -1,19 +1,17 @@
-import 'dart:ffi';
-
 class User {
   const User(
       {required this.status,
-      required this.selfieByteString,
+      required this.selfieBaseString,
       required this.isHost});
 
   final String status;
-  final String selfieByteString;
-  final Bool isHost;
+  final String selfieBaseString;
+  final bool isHost;
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       status: json['status'],
-      selfieByteString: json['selfieByteString'],
+      selfieBaseString: json['selfieBaseString'],
       isHost: json['isAdmin'],
     );
   }
