@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hangryclient/view/create.dart';
 import 'package:hangryclient/view/home.dart';
 import 'package:hangryclient/view/in_out.dart';
+import 'package:hangryclient/view/food_categories_page.dart';
+import 'package:hangryclient/view/price_page.dart';
+import 'package:hangryclient/view/restaurant_choice.dart';
+import 'package:hangryclient/view/waiting_page.dart';
 import 'package:hangryclient/view/join.dart';
 
 class FlowParent extends StatefulWidget {
@@ -20,16 +24,7 @@ class _FlowParentState extends State<FlowParent> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: [
-          const Home(),
-          CreateSession(
-            imagePath: '',
-          ),
-          JoinSession(
-            imagePath: '',
-          ),
-          const ModeSelector()
-        ],
+        children: const [Home(), ModeSelector()],
       ),
     );
   }
