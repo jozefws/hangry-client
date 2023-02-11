@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hangryclient/view/mode_select_page.dart';
+import 'package:hangryclient/view/flow_parent.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Hangry',
       theme: lightTheme,
-      home: const ModeSelectPage(),
+      home: const FlowParent(),
     );
   }
 }
