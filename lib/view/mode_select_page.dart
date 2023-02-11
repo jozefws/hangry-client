@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hangryclient/view/food_categories_page.dart';
+import 'package:hangryclient/view/price_page.dart';
+import 'package:hangryclient/view/restaurant_choice.dart';
+import 'package:hangryclient/view/waiting_page.dart';
 import 'package:hangryclient/view/welcome_page.dart';
 
 class ModeSelectPage extends StatefulWidget {
@@ -17,7 +21,14 @@ class _ModeSelectPageState extends State<ModeSelectPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: [WelcomePage()],
+        // physics: const NeverScrollableScrollPhysics(),
+        children: [
+          WelcomePage(),
+          FoodCategoriesPage(),
+          PricePage(),
+          WaitingPage(),
+          RestaurantChoicePage()
+        ],
       ),
     );
   }
