@@ -63,15 +63,10 @@ class _CreateSessionState extends State<CreateSession> {
                       Container(
                         margin: const EdgeInsets.fromLTRB(40, 20, 40, 20),
                         child: Text(
-                          "Your group code is:",
+                          "Start a new session!",
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
-                      Text("5135",
-                          style: TextStyle(
-                              fontSize: 70,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor)),
                       const SizedBox(height: 100),
                       Container(
                         width: 300,
@@ -93,10 +88,7 @@ class _CreateSessionState extends State<CreateSession> {
                           icon: Icon(Icons.camera_alt),
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      Text("(Optional)",
-                          style: Theme.of(context).textTheme.bodySmall),
-                      const SizedBox(height: 100),
+                      const SizedBox(height: 120),
                       FloatingActionButton.extended(
                         backgroundColor: Theme.of(context).primaryColor,
                         foregroundColor:
