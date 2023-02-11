@@ -106,7 +106,6 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   void navigateBack(XFile picture) {
-    print(picture.path);
     Navigator.pop(context, picture);
   }
 }

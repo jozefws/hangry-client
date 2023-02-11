@@ -24,7 +24,14 @@ class _FlowParentState extends State<FlowParent> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: const [Home(), ModeSelector()],
+        children: [
+          WaitingPage(),
+          Home(),
+          JoinSession(imagePath: ''),
+          CreateSession(
+            imagePath: "",
+          ),
+        ],
       ),
     );
   }
