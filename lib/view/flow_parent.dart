@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hangryclient/view/home.dart';
 import 'package:hangryclient/view/in_out.dart';
+import 'package:hangryclient/view/food_categories_page.dart';
+import 'package:hangryclient/view/price_page.dart';
+import 'package:hangryclient/view/restaurant_choice.dart';
+import 'package:hangryclient/view/waiting_page.dart';
 
 class FlowParent extends StatefulWidget {
   const FlowParent({Key? key}) : super(key: key);
@@ -18,7 +22,14 @@ class _FlowParentState extends State<FlowParent> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: const [Home(), ModeSelector()],
+        children: [
+          Home(),
+          ModeSelector(),
+          FoodCategoriesPage(),
+          PricePage(),
+          WaitingPage(),
+          RestaurantChoicePage()
+        ],
       ),
     );
   }
