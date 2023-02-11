@@ -6,17 +6,15 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const Icon(Icons.arrow_back_ios),
-      ),
+      appBar: AppBar(),
       body: Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
             Container(
-              height: 200,
-              margin: const EdgeInsets.all(30),
+              height: 180,
+              margin: const EdgeInsets.all(40),
               child: Image.asset("images/Logo.png"),
             ),
             const SizedBox(height: 40),
@@ -24,9 +22,15 @@ class Home extends StatelessWidget {
               margin: const EdgeInsets.all(10),
               child: Text("Welcome to Hangry!",
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineSmall),
+                  style: Theme.of(context).textTheme.headlineMedium),
             ),
-            const SizedBox(height: 60),
+            Container(
+              margin: const EdgeInsets.all(10),
+              child: Text("Do you want to start a group or join one",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyLarge),
+            ),
+            const SizedBox(height: 40),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
@@ -40,7 +44,7 @@ class Home extends StatelessWidget {
                       },
                       label: const Text(
                         "Join",
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 16),
                       ),
                     ),
                   ),
@@ -54,7 +58,7 @@ class Home extends StatelessWidget {
                       },
                       label: const Text(
                         "Create",
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 16),
                       ),
                     ),
                   ),

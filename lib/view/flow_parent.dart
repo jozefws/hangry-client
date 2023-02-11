@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hangryclient/view/create.dart';
 import 'package:hangryclient/view/home.dart';
 import 'package:hangryclient/view/in_out.dart';
+import 'package:hangryclient/view/join.dart';
 
 class FlowParent extends StatefulWidget {
   const FlowParent({Key? key}) : super(key: key);
@@ -18,7 +20,16 @@ class _FlowParentState extends State<FlowParent> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: const [Home(), ModeSelector()],
+        children: [
+          const Home(),
+          CreateSession(
+            imagePath: '',
+          ),
+          JoinSession(
+            imagePath: '',
+          ),
+          const ModeSelector()
+        ],
       ),
     );
   }
