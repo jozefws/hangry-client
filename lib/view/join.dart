@@ -98,9 +98,6 @@ class _JoinSessionState extends State<JoinSession> {
                           icon: Icon(Icons.camera_alt),
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      Text("(Optional)",
-                          style: Theme.of(context).textTheme.bodySmall),
                       const SizedBox(height: 160),
                       FloatingActionButton.extended(
                         //backgroundColor: Theme.of(context).primaryColor,
