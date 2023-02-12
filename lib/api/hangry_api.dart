@@ -6,6 +6,8 @@ import 'package:hangryclient/model/place.dart';
 import 'package:hangryclient/view/food_categories_page.dart';
 import 'package:http/http.dart' as http;
 
+import '../model/user.dart';
+
 class HangryApi {
   final client = http.Client();
 
@@ -18,6 +20,7 @@ class HangryApi {
     String uuid,
     String code,
   ) async {
+
     final response = await client.post(Uri.http("${dotenv.get("url")}$code/preferences"),
         body: json.encode({
           "code": code,
@@ -27,7 +30,7 @@ class HangryApi {
           "minPrice": minPrice.toInt(),
           "maxPrice": maxPrice.toInt(),
         }));
-
+        
     if (response.statusCode != 200) {
       return null;
     }
@@ -36,6 +39,7 @@ class HangryApi {
   }
 
   Future<List<Place>?> getChoices(String uuid, String code) async {
+
     final response = await client.get(Uri.http("${dotenv.get("url")}$code/choices"),
         headers: {HttpHeaders.authorizationHeader: uuid});
 
@@ -74,6 +78,7 @@ class HangryApi {
 
     return json.decode(response.body)["code"];
   }
+
 
   Future<List<dynamic>?> joinLobby(String code, String photo) async {
     final response = await client.post(Uri.http("${dotenv.get("url")}$code/join"),
