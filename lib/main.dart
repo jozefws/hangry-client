@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hangryclient/provider/session_provider.dart';
 import 'package:hangryclient/view/flow_parent.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,10 +25,16 @@ class MyApp extends StatelessWidget {
       brightness: Brightness.dark,
     );
 
-    return MaterialApp(
-      title: 'Hangry',
-      theme: lightTheme,
-      home: const FlowParent(),
-    );
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => SessionProvider(),
+          )
+        ],
+        child: MaterialApp(
+          title: 'Hangry',
+          theme: lightTheme,
+          home: const FlowParent(),
+        ));
   }
 }
