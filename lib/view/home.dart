@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hangryclient/view/create.dart';
+import 'package:hangryclient/view/food_categories_page.dart';
+import 'package:hangryclient/view/join.dart';
 
 class Home extends StatelessWidget {
   Home({super.key, required this.onNext, required this.onBack});
-  void Function() onNext;
+  void Function(Widget? next) onNext;
   void Function() onBack;
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: [
           Container(
@@ -37,9 +40,11 @@ class Home extends StatelessWidget {
                   child: Container(
                     margin: const EdgeInsets.all(16),
                     child: FloatingActionButton.extended(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/join');
-                      },
+                      onPressed: () => onNext(JoinSession(
+                        imagePath: "",
+                        onNext: (next) => onNext(next),
+                        onBack: onBack,
+                      )),
                       label: const Text(
                         "Join",
                         style: TextStyle(fontSize: 16),
@@ -51,9 +56,11 @@ class Home extends StatelessWidget {
                   child: Container(
                     margin: const EdgeInsets.all(16),
                     child: FloatingActionButton.extended(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/create');
-                      },
+                      onPressed: () => onNext(CreateSession(
+                        imagePath: "",
+                        onNext: (next) => onNext(next),
+                        onBack: onBack,
+                      )),
                       label: const Text(
                         "Create",
                         style: TextStyle(fontSize: 16),
@@ -62,6 +69,9 @@ class Home extends StatelessWidget {
                   ),
                 ),
               ]),
+          SizedBox(
+            height: 80,
+          )
         ],
       ),
     );

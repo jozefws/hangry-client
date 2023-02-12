@@ -3,11 +3,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hangryclient/api/hangry_api.dart';
 import 'package:hangryclient/provider/session_provider.dart';
 import 'package:hangryclient/view/food_categories_page.dart';
+import 'package:hangryclient/view/waiting_page.dart';
 import 'package:provider/provider.dart';
 
 class PricePage extends StatefulWidget {
   PricePage({super.key, required this.onNext, required this.onBack});
-  void Function() onNext;
+  void Function(Widget?) onNext;
   void Function() onBack;
 
   @override
@@ -28,8 +29,10 @@ class _PricePageState extends State<PricePage> {
                   child: MaterialButton(
                       onPressed: () {
                         session.setPrice(bottom, top);
-
-                        widget.onNext();
+                        session.submitPreferences();
+                        widget.onNext(WaitingPage(
+                          onNext: (p0) => widget.onNext(p0),
+                        ));
                       },
                       child: const Text("Next", style: TextStyle(fontSize: 18))),
                 ),

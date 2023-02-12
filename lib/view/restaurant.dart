@@ -24,7 +24,7 @@ class RestaurantCard extends StatelessWidget {
                         height: 180,
                         width: double.infinity,
                         child: Ink.image(
-                          image: Image.memory(base64Decode(place.photo)).image,
+                          image: Image.memory(base64Decode(place.photos![0])).image,
                           fit: BoxFit.cover,
                         ),
                       )),
@@ -34,7 +34,7 @@ class RestaurantCard extends StatelessWidget {
                         Text(
                           place.name,
                         ),
-                        Text(place.description)
+                        Text(place.description ?? "")
                       ])),
                 ]))));
   }
