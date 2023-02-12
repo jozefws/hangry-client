@@ -7,16 +7,15 @@ class RestaurantCard extends StatelessWidget {
   // const RestaurantCard({super.key, required this.place});
   RestaurantCard({super.key, required this.onSelect});
 
+  final Place place;
   final void Function() onSelect;
-
   final Place place = Place(id: "A", name: "A", description: "A", photos: [""], healthRating: "A", googleRating: "A", location: Tuple2(0,0), wheelchairAccessible: true, priceRange: '0', matchScore: 0);
-
+  
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: Card(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
             child: InkWell(
-                onTap: () => onSelect,
+                onTap: onSelect,
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   ClipRRect(
                       borderRadius: BorderRadius.circular(10),
