@@ -33,7 +33,6 @@ class _RestaurantChoicePageState extends State<RestaurantChoicePage> {
       choices = null;
     });
     print("Cleared: $choices");
-    sleep(Duration(seconds: 2));
     final newChoices = await api.getChoices(uuid, code);
     setState(() {
       choices = newChoices;
