@@ -9,15 +9,15 @@ import 'package:provider/provider.dart';
 
 import '../model/user.dart';
 
-class WaitingPage extends StatefulWidget {
-  const WaitingPage({super.key, required this.onNext});
+class WaitingPage2 extends StatefulWidget {
+  const WaitingPage2({super.key, required this.onNext});
   final void Function(Widget?) onNext;
 
   @override
-  State<WaitingPage> createState() => _WaitingPageState();
+  State<WaitingPage2> createState() => _WaitingPageState();
 }
 
-class _WaitingPageState extends State<WaitingPage> {
+class _WaitingPageState extends State<WaitingPage2> {
   Timer? timer;
   bool ready = false;
 
