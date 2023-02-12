@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hangryclient/api/hangry_api.dart';
 import 'package:hangryclient/provider/session_provider.dart';
 import 'package:hangryclient/view/restaurant_choice.dart';
+import 'package:hangryclient/view/results.dart';
 import 'package:provider/provider.dart';
 
 import '../model/user.dart';
@@ -71,12 +72,8 @@ class _WaitingPageState extends State<WaitingPage2> {
         Consumer<SessionProvider>(
             builder: (context, session, child) => FloatingActionButton.extended(
                 onPressed: () async {
-                  await HangryApi().start(session.code!, session.uuid!);
-                  widget.onNext(RestaurantChoicePage(
-                    uuid: session.uuid!,
-                    code: session.code!,
-                    onNext: (p0) => widget.onNext(p0),
-                  ));
+                  await HangryApi().end(session.code!, session.uuid!);
+                  widget.onNext(ResultsPage());
                 },
                 label: const Text("Begin choosing"),
                 icon: const Icon(Icons.arrow_forward))),

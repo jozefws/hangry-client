@@ -54,6 +54,8 @@ dependencies:
   location: ^4.4.0
   google_maps_flutter: ^2.2.3
   place_picker: ^0.10.0
+  map_launcher: ^2.4.0
+
 
 dev_dependencies:
   flutter_test:

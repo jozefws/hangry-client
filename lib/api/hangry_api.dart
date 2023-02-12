@@ -137,9 +137,10 @@ class HangryApi {
   }
 
   Future<bool?> end(String code, String uuid) async {
-    final response = await client.post(Uri.http("${dotenv.get("url")}$code/end"),
+    final response = await client.put(Uri.http("${dotenv.get("url")}", "$code/end"),
         headers: {HttpHeaders.authorizationHeader: uuid});
 
+    print("ending with : ${response.statusCode}");
     if (response.statusCode != 200) {
       return false;
     }
@@ -147,12 +148,36 @@ class HangryApi {
   }
 
   Future<List<Place>?> getResults(String code, String uuid) async {
-    final response = await client.post(Uri.http("${dotenv.get("url")}$code/results"),
-        headers: {HttpHeaders.authorizationHeader: uuid});
-
+    final response = await client.get(Uri.http("${dotenv.get("url")}", "$code/results"), headers: {
+      HttpHeaders.authorizationHeader: uuid,
+      HttpHeaders.contentTypeHeader: "application/json",
+    });
+    // print(response.statusCode);
+    print(response.body);
     if (response.statusCode != 200) {
       return null;
     }
-    return ((jsonDecode(response.body)["choices"]) as List).map((e) => Place.fromJson(e)).toList();
+    // print(response.body);
+    // print((jsonDecode(response.body)["results"] as List).toString());
+    final places =
+        (jsonDecode(response.body)["results"] as List).map((e) => Place.fromJson(e)).toList();
+    final matches = jsonDecode(response.body)["matches"];
+
+    for (Place p in places) {
+      p.match = matches[p.id];
+      print(p.match);
+    }
+    return places;
+  }
+
+  Future<List<User>?> getUsers(String code, String uuid) async {
+    final response = await client.get(Uri.http("${dotenv.get("url")}", "$code/users"), headers: {
+      HttpHeaders.authorizationHeader: uuid,
+      HttpHeaders.contentTypeHeader: "application/json",
+    });
+
+    if (response.statusCode != 200) return null;
+
+    return ((jsonDecode(response.body)["users"] as List).map((e) => User.fromJson(e)).toList());
   }
 }

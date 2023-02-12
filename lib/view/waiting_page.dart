@@ -20,6 +20,7 @@ class WaitingPage extends StatefulWidget {
 class _WaitingPageState extends State<WaitingPage> {
   Timer? timer;
   bool ready = false;
+  List<User> users = [];
 
   @override
   initState() {
@@ -64,7 +65,22 @@ class _WaitingPageState extends State<WaitingPage> {
         const SizedBox(
           height: 40,
         ),
-        SizedBox(height: 100, child: SelfieDisplayGen()),
+        SizedBox(
+            height: 100,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: users
+                  .map(
+                    (e) => Container(
+                      margin: const EdgeInsets.all(10),
+                      child: const CircleAvatar(
+                        radius: 24,
+                        backgroundImage: AssetImage("images/Logo.png"),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            )),
         const SizedBox(
           height: 40,
         ),

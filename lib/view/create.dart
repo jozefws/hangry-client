@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hangryclient/api/hangry_api.dart';
 import 'package:hangryclient/provider/session_provider.dart';
@@ -223,7 +224,7 @@ class _CreateSessionState extends State<CreateSession> {
   Future<LocationResult> showPlacePicker() async {
     LocationResult result = await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => PlacePicker(
-              "AIzaSyABjyegR7knQB_7JiMM3FUXsz7hkuMcW0A",
+              dotenv.get("maps_api_key"),
               // displayLocation: ,
             )));
 

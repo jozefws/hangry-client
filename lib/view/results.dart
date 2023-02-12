@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hangryclient/api/hangry_api.dart';
 import 'package:hangryclient/provider/session_provider.dart';
+import 'package:hangryclient/view/restaurant.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 
 import '../model/place.dart';
-import 'package:map_launcher/map_launcher.dart';
 
 class ResultsPage extends StatefulWidget {
   const ResultsPage({super.key});
@@ -15,37 +17,20 @@ class ResultsPage extends StatefulWidget {
 }
 
 class _ResultsPageState extends State<ResultsPage> {
-  // List<Place> places = getPlaces();
-  final List<Place> places = [
-    Place(
-        id: "A",
-        name: "L'Italiano",
-        description: "Halal, Vegetarian",
-        photos: ["", "", ""],
-        healthRating: "4.3",
-        googleRating: "4.2",
-        location: Tuple2(52.9561181, -1.1650198),
-        wheelchairAccessible: true,
-        priceRange: '3',
-        matchScore: 14.1)
-  ];
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      physics: ClampingScrollPhysics(),
       child: Center(
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
-            SizedBox(
-              height: 60,
-            ),
             Container(
               margin: const EdgeInsets.only(bottom: 40),
               child: SvgPicture.asset(
                 "images/groupFun.svg",
-                height: 130,
+                height: 100,
               ),
             ),
             Text(
@@ -56,24 +41,50 @@ class _ResultsPageState extends State<ResultsPage> {
               height: 20,
             ),
             Text(
-              "Your groups top 5 choices are...",
+              "Your groups top choices are...",
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(
               height: 20,
             ),
-            Container(
-              margin: const EdgeInsets.only(left: 20, right: 20),
-              child: Column(children: getTopFive()),
-            ),
+            Consumer<SessionProvider>(
+                builder: (context, session, child) => FutureBuilder(
+                    future: HangryApi().getResults(session.code!, session.uuid!),
+                    builder: (context, snapshot) => Container(
+                          width: double.infinity,
+                          height: 1300,
+                          margin: const EdgeInsets.only(left: 20, right: 20),
+                          child: !snapshot.hasData
+                              ? null
+                              : Column(
+                                  // children:
+                                  // getTopFive(snapshot.data!)),
+                                  children:
+                                      (snapshot.data!..sort((a, b) => b.match!.compareTo(a.match!)))
+                                          .take(5)
+                                          .map((e) => Expanded(
+                                                  child: RestaurantResultCard(
+                                                place: e,
+                                                onSelect: () {},
+                                                // onSelect: OpenMap(e.location ?? Tuple2(0.0, 0.0),
+                                                //     e.name, maps.data!)
+                                              )))
+                                          .toList()),
+                        ))),
+            const SizedBox(
+              height: 100,
+            )
           ])),
     );
   }
 
-  List<Theme> getTopFive() {
+  List<Theme> getTopFive(List<Place> places) {
     List<Theme> topFive = [];
+    print("AHHHHHHH");
+    print(places);
 
     for (int i = 1; i < 6; i++) {
+      print(places[i - 1]);
       topFive.add(Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
@@ -90,7 +101,7 @@ class _ResultsPageState extends State<ResultsPage> {
                 //     height: 30),
                 // const SizedBox(width: 10),
                 Text(
-                  "${places[0].name}",
+                  places[i - 1].name,
                   style: Theme.of(context).textTheme.bodyMedium,
                   softWrap: true,
                 )
@@ -112,7 +123,7 @@ class _ResultsPageState extends State<ResultsPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "${places[0].matchScore}%",
+                                  places[0].match == null ? "None" : "t",
                                   style: TextStyle(
                                     fontSize: 45,
                                     fontWeight: FontWeight.bold,
@@ -131,7 +142,7 @@ class _ResultsPageState extends State<ResultsPage> {
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Row(children: [
-                                  Text("${places[0].googleRating} ",
+                                  Text(places[i - 1].googleRating?.toString() ?? "None",
                                       textAlign: TextAlign.left,
                                       style: Theme.of(context).textTheme.titleLarge),
                                   Icon(Icons.star, color: Colors.yellow, size: 30),
@@ -139,7 +150,7 @@ class _ResultsPageState extends State<ResultsPage> {
                                 Text("Google Rating ", textAlign: TextAlign.left),
                                 SizedBox(height: 10),
                                 Row(children: [
-                                  Text("${places[0].healthRating} ",
+                                  Text(places[i - 1].healthRating ?? "None",
                                       textAlign: TextAlign.left,
                                       style: Theme.of(context).textTheme.titleLarge),
                                   Icon(Icons.star, color: Colors.yellow, size: 30),
@@ -153,7 +164,7 @@ class _ResultsPageState extends State<ResultsPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              genPriceText(places[0].priceRange),
+                              genPriceText(places[i - 1].priceRange ?? "None"),
                               Text("Price Range"),
                               SizedBox(height: 10),
                               // Return a future builder that checks MapLauncher.isMapAvailable
@@ -165,7 +176,9 @@ class _ResultsPageState extends State<ResultsPage> {
                                     if (snapshot.data != null) {
                                       return FloatingActionButton.small(
                                           onPressed: () => OpenMap(
-                                              places[0].location, places[0].name, snapshot.data!),
+                                              places[i - 1].location ?? Tuple2(0.0, 0.0),
+                                              places[i - 1].name,
+                                              snapshot.data!),
                                           child: Icon(Icons.map));
                                     } else {
                                       return FloatingActionButton.small(
@@ -241,16 +254,16 @@ class _ResultsPageState extends State<ResultsPage> {
   List<Chip> genChips(Place place) {
     print(place);
     List<Chip> chips = [];
-    if (place.description.contains("Vegetarian") == true) {
+    if (place.description?.contains("Vegetarian") == true) {
       chips.add(Chip(label: Text("Vegetarian")));
     }
-    if (place.wheelchairAccessible) {
+    if (place.wheelchairAccessible == true) {
       chips.add(Chip(label: Text("Wheelchair Acc.")));
     }
-    if (place.description.contains("Halal") == true) {
+    if (place.description?.contains("Halal") == true) {
       chips.add(Chip(label: Text("Halal")));
     }
-    if (place.description.contains("Serves Alcohol") == true) {
+    if (place.description?.contains("Serves Alcohol") == true) {
       chips.add(Chip(label: Text("Serves Alcohol")));
     }
     return chips;
