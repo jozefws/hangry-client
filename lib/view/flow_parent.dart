@@ -8,6 +8,7 @@ import 'package:hangryclient/view/in_out.dart';
 import 'package:hangryclient/view/food_categories_page.dart';
 import 'package:hangryclient/view/price_page.dart';
 import 'package:hangryclient/view/restaurant_choice.dart';
+import 'package:hangryclient/view/results.dart';
 import 'package:hangryclient/view/waiting_page.dart';
 import 'package:hangryclient/view/join.dart';
 import 'package:provider/provider.dart';
