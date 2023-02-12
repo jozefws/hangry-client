@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:hangryclient/api/hangry_api.dart';
 import 'package:hangryclient/helpers.dart';
 import 'package:hangryclient/provider/session_provider.dart';
-import 'package:hangryclient/view/page_view_item.dart';
+import 'package:hangryclient/view/price_page.dart';
 import 'package:provider/provider.dart';
 
 class FoodCategoriesPage extends StatefulWidget {
-  FoodCategoriesPage({super.key, required this.onNext, required this.onBack});
-  void Function() onNext;
-  void Function() onBack;
+  const FoodCategoriesPage({super.key, required this.onNext, required this.onBack});
+  final void Function(Widget?) onNext;
+  final void Function() onBack;
   @override
   State<StatefulWidget> createState() => _FoodCategoriesPageState();
 }
@@ -20,17 +18,18 @@ enum Category {
   italian,
   indian,
   greek,
-  japanese,
+  pub,
   french,
   caribbean,
   thai,
   spanish,
   mexican,
-  pub,
+  japanese,
   tapas,
+  halal,
 }
 
-enum Restrictions { vegetarian, alcohol }
+enum Restrictions { vegetarian, alcohol, wheelchair }
 
 extension ToString on Category {
   String toPrettyString() {
@@ -40,6 +39,9 @@ extension ToString on Category {
 
 extension RestrictionToString on Restrictions {
   String toPrettyString() {
+    if (this == Restrictions.wheelchair) {
+      return "Wheelchair Accessible";
+    }
     return toString().split('.').last.capitalize();
   }
 }
@@ -60,7 +62,8 @@ class _FoodCategoriesPageState extends State<FoodCategoriesPage> {
                       onPressed: choices.length > 1
                           ? () {
                               session.setCategories(choices, restrictions);
-                              widget.onNext();
+                              widget.onNext(PricePage(
+                                  onNext: (next) => widget.onNext(next), onBack: widget.onBack));
                             }
                           : null,
                       child: const Text("Next", style: TextStyle(fontSize: 18))),
@@ -68,7 +71,7 @@ class _FoodCategoriesPageState extends State<FoodCategoriesPage> {
               ),
               Center(
                   child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.max,
@@ -83,19 +86,72 @@ class _FoodCategoriesPageState extends State<FoodCategoriesPage> {
                           ),
                           Padding(
                               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
-                              child: SvgPicture.asset("images/undraw_hamburger.svg", width: 250)),
-                          Wrap(
-                            alignment: WrapAlignment.center,
-                            spacing: 8.0,
-                            runSpacing: 4,
+                              child: SvgPicture.asset("images/undraw_hamburger.svg", width: 220)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: Category.values
-                                .map((e) => ChoiceChip(
-                                    label: Text(e.toPrettyString(),
-                                        style: const TextStyle(fontSize: 16)),
-                                    selected: choices.contains(e),
-                                    onSelected: (value) {
-                                      setState(() => value ? choices.add(e) : choices.remove(e));
-                                    }))
+                                .take(3)
+                                .map((e) => Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 4),
+                                    child: ChoiceChip(
+                                        label: Text(e.toPrettyString(),
+                                            style: const TextStyle(fontSize: 16)),
+                                        selected: choices.contains(e),
+                                        onSelected: (value) {
+                                          setState(
+                                              () => value ? choices.add(e) : choices.remove(e));
+                                        })))
+                                .toList(),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: Category.values
+                                .sublist(3)
+                                .take(3)
+                                .map((e) => Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 4),
+                                    child: ChoiceChip(
+                                        label: Text(e.toPrettyString(),
+                                            style: const TextStyle(fontSize: 16)),
+                                        selected: choices.contains(e),
+                                        onSelected: (value) {
+                                          setState(
+                                              () => value ? choices.add(e) : choices.remove(e));
+                                        })))
+                                .toList(),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: Category.values
+                                .sublist(6)
+                                .take(3)
+                                .map((e) => Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 4),
+                                    child: ChoiceChip(
+                                        label: Text(e.toPrettyString(),
+                                            style: const TextStyle(fontSize: 16)),
+                                        selected: choices.contains(e),
+                                        onSelected: (value) {
+                                          setState(
+                                              () => value ? choices.add(e) : choices.remove(e));
+                                        })))
+                                .toList(),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: Category.values
+                                .sublist(9)
+                                .take(3)
+                                .map((e) => Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 4),
+                                    child: ChoiceChip(
+                                        label: Text(e.toPrettyString(),
+                                            style: const TextStyle(fontSize: 16)),
+                                        selected: choices.contains(e),
+                                        onSelected: (value) {
+                                          setState(
+                                              () => value ? choices.add(e) : choices.remove(e));
+                                        })))
                                 .toList(),
                           ),
                           AnimatedOpacity(
@@ -107,11 +163,26 @@ class _FoodCategoriesPageState extends State<FoodCategoriesPage> {
                           const SizedBox(
                             height: 20,
                           ),
-                          Wrap(
-                            alignment: WrapAlignment.center,
-                            spacing: 8.0,
-                            runSpacing: 4,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: Restrictions.values
+                                .take(2)
+                                .map((e) => Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 4),
+                                    child: ChoiceChip(
+                                        label: Text(e.toPrettyString(),
+                                            style: const TextStyle(fontSize: 16)),
+                                        selected: restrictions.contains(e),
+                                        onSelected: (value) {
+                                          setState(() =>
+                                              value ? restrictions.add(e) : restrictions.remove(e));
+                                        })))
+                                .toList(),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: Restrictions.values
+                                .sublist(2)
                                 .map((e) => ChoiceChip(
                                     label: Text(e.toPrettyString(),
                                         style: const TextStyle(fontSize: 16)),

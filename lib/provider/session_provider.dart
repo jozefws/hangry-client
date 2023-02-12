@@ -51,6 +51,7 @@ class SessionProvider extends ChangeNotifier {
       categories,
       restrictions.contains(Restrictions.vegetarian),
       restrictions.contains(Restrictions.alcohol),
+      restrictions.contains(Restrictions.wheelchair),
       minPrice,
       maxPrice,
       getUUID(),

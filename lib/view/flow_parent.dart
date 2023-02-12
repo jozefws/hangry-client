@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hangryclient/provider/session_provider.dart';
 import 'package:hangryclient/view/create.dart';
 import 'package:hangryclient/model/place.dart';
 import 'package:hangryclient/view/home.dart';
@@ -8,6 +10,7 @@ import 'package:hangryclient/view/price_page.dart';
 import 'package:hangryclient/view/restaurant_choice.dart';
 import 'package:hangryclient/view/waiting_page.dart';
 import 'package:hangryclient/view/join.dart';
+import 'package:provider/provider.dart';
 
 class FlowParent extends StatefulWidget {
   const FlowParent({Key? key}) : super(key: key);
@@ -43,7 +46,10 @@ class _FlowParentState extends State<FlowParent> {
     super.initState();
     children = [
       Home(
-        onNext: () => goToNextPage(),
+        onNext: (next) {
+          if (next != null) children.add(next);
+          goToNextPage();
+        },
         onBack: () => goToLastPage(),
       )
     ];
@@ -51,46 +57,25 @@ class _FlowParentState extends State<FlowParent> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: _controller.positions.isEmpty ? false : _controller.page! != 0,
-      ),
-      body: PageView(
-        controller: _controller,
-        // physics: const NeverScrollableScrollPhysics(),
-        children: [
-
-          Home(
-            onNext: () => goToNextPage(),
-            onBack: () {},
-          ),
-          ModeSelector(
-            onNext: () => goToNextPage(),
-            onBack: () => goToLastPage(),
-          ),
-          FoodCategoriesPage(
-            onNext: () => goToNextPage(),
-            onBack: () => goToLastPage(),
-          ),
-          PricePage(
-            onNext: () => goToNextPage(),
-            onBack: () => goToLastPage(),
-          ),
-          const WaitingPage(),
-          RestaurantChoicePage(choices: [
-            const Place(
-                id: "dlsfjsldkfj",
-                name: "Restaurant 1",
-                description: "This is a very good restaurant",
-                photo: ""),
-            const Place(
-                id: "dlsfjsldkfj",
-                name: "Restaurant 2",
-                description: "This is a very good restaurant",
-                photo: ""),
-          ])
-        ],
-      ),
-    );
+    return Consumer<SessionProvider>(
+        builder: (context, session, child) => Scaffold(
+              appBar: AppBar(
+                title: session.code != null ? Text("Join with ${session.code}") : null,
+                leading: children.length == 1
+                    ? null
+                    : InkWell(
+                        onTap: goToLastPage,
+                        child: Icon(
+                          CupertinoIcons.back,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+              ),
+              body: PageView(
+                controller: _controller,
+                physics: const NeverScrollableScrollPhysics(),
+                children: children,
+              ),
+            ));
   }
 }
