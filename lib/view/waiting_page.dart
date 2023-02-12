@@ -69,6 +69,7 @@ ListView SelfieDisplayGen() {
         ),
       ),
     );
+
   }
   return ListView(
     scrollDirection: Axis.horizontal,

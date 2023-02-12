@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  Home({super.key, required this.onNext, required this.onBack});
+  void Function() onNext;
+  void Function() onBack;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
+    return Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
@@ -60,12 +60,13 @@ class Home extends StatelessWidget {
                         "Create",
                         style: TextStyle(fontSize: 16),
                       ),
+
                     ),
                   ),
                 ),
-              ],
-            ),
-          ])),
-    );
+              ),
+            ],
+          ),
+        ]));
   }
 }
