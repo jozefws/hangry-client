@@ -1,19 +1,18 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:hangryclient/model/place.dart';
+import 'package:tuple/tuple.dart';
 
 class RestaurantCard extends StatelessWidget {
   // const RestaurantCard({super.key, required this.place});
-  const RestaurantCard({super.key, required this.place, required this.onSelect});
+  RestaurantCard({super.key, required this.onSelect});
 
   final Place place;
   final void Function() onSelect;
-
+  final Place place = Place(id: "A", name: "A", description: "A", photos: [""], healthRating: "A", googleRating: "A", location: Tuple2(0,0), wheelchairAccessible: true, priceRange: '0', matchScore: 0);
+  
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: Card(
             clipBehavior: Clip.antiAliasWithSaveLayer,
             child: InkWell(
                 onTap: onSelect,
@@ -36,6 +35,10 @@ class RestaurantCard extends StatelessWidget {
                         ),
                         Text(place.description ?? "")
                       ])),
-                ]))));
+                ]
+                )
+            )
+        )
+    );
   }
 }
